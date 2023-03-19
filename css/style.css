@@ -1,0 +1,47 @@
+:root{
+
+}
+
+::placeholder {
+color: #dcdcdc !important;
+}
+
+.meals img,.meal {
+  cursor: pointer;
+}
+
+.nav-in {
+  /* display: none; */
+  height: 100%;
+  width: 250px;
+  top: 0;
+  left: -250px;
+}
+
+.nav-out {
+  /* display: none; */
+  height: 100%;
+  width: 60px;
+  background-color: #fff;
+  top: 0;
+  left: 0px;
+}
+
+.nav-items btn, nav i {
+  cursor: pointer;
+}
+
+.meal-layer {
+  top: 100%;
+  background-color: #f9f6f6ca;
+}
+
+.btn-back {
+  right: 30px;
+  bottom: 30px;
+  display: none;
+}
+
+.nav-items-top {
+  /* display: none; */
+}
