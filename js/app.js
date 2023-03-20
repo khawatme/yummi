@@ -146,11 +146,10 @@ async function getMeal(mealId) {
       <h3><span class="fw-bold">Category :</span> ${jsonApiResponse.strCategory}</h3>
       <h3>Recipes :</h3>
         ${strRecipes}
-      
         ${strTags}
       <div class="btns my-2">
-        <button type="button" class="btn btn-info"><a class="text-decoration-none" href=${jsonApiResponse.strSource} target="_blank">Source</a></button>
-        <button type="button" class="btn btn-danger"><a class="text-decoration-none" href=${jsonApiResponse.strYoutube} target="_blank">Youtube</a></button>
+        <button type="button" class="btn btn-info"><a class="text-decoration-none text-white" href=${jsonApiResponse.strSource} target="_blank">Source</a></button>
+        <button type="button" class="btn btn-danger"><a class="text-decoration-none text-white" href=${jsonApiResponse.strYoutube} target="_blank">Youtube</a></button>
       </div>
     </div>
   </div>
@@ -158,7 +157,7 @@ async function getMeal(mealId) {
 
   $('.meals').html(strHTML);
   // $('.btn-back').show();
-  // $('.btn-back').click(function() {
+  // $('.btn-back').click(()=> {
   //   $('body').html(strPreviewPage);
   // })
 }
@@ -198,7 +197,7 @@ async function searchMeal(strSearch,strNameOrLetter = 's') {
 }
 
 function toggleNav() {
-  $('.nav-btn, btn').click(function () {
+  $('.nav-btn, btn').click( ()=> {
     if($('.nav-out').css('left') == '250px') {
       $('.nav-out').animate({left: '0px',display: 'none'},500);
       $('.nav-in').animate({left: '-250px',display: 'none'},500);
@@ -214,23 +213,30 @@ function toggleNav() {
 getMeals();
 toggleNav();
 
-$('#categories').click(function() {
-  $('.search').addClass('d-none')
+$('#categories').click(()=> {
+  $('.search,.contact').addClass('d-none')
   getMealsCategories();
 })
 
-$('#area').click(function() {
-  $('.search').addClass('d-none');
+$('#area').click(()=> {
+  $('.search,.contact').addClass('d-none');
   getList('a');
 })
 
-$('#ingredients').click(function() {
-  $('.search').addClass('d-none');
+$('#ingredients').click(()=> {
+  $('.search,.contact').addClass('d-none');
   getList('i');
 })
 
-$('#search').click(function() {
-  $('.search').removeClass('d-none')
+$('#contact').click(()=> {
+  $('.search').addClass('d-none');
+  $('.meals').html('');
+  $('.contact').removeClass('d-none');
+})
+
+$('#search').click(()=> {
+  $('.search').removeClass('d-none');
+  $('.contact').addClass('d-none');
   $('.meals').html('');
 
   if($('#s-name').length > 0) {
