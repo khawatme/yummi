@@ -2,12 +2,22 @@
 color: #dcdcdc !important;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 .meals img,.meal {
   cursor: pointer;
 }
 
 .nav-in {
-  /* display: none; */
   height: 100%;
   width: 250px;
   top: 0;
@@ -15,7 +25,6 @@ color: #dcdcdc !important;
 }
 
 .nav-out {
-  /* display: none; */
   height: 100%;
   width: 60px;
   background-color: #fff;
