@@ -1,5 +1,6 @@
-strApiLink = "https://www.themealdb.com/api/json/v1/1/";
-strPreviewPage = "";
+'use strict';
+const strApiLink = "https://www.themealdb.com/api/json/v1/1/";
+let strPreviewPage = "";
 
 async function getMeals() {
   $(".loader").removeClass("d-none");
