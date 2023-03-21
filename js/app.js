@@ -46,7 +46,7 @@ function displayMeals(arr, type = "m") {
   } else if (type == "c") {
     for (let i = 0; i < arr.length; i++) {
       strHTML += `
-      <div class="col-lg-3 col-md-4">
+      <div class="col-lg-3 col-md-4 text-center">
         <div class="meal position-relative overflow-hidden rounded-3" data-id=${
           arr[i].strCategory
         }>
@@ -274,16 +274,19 @@ toggleNav();
 $("#categories").click(() => {
   $(".search,.contact").addClass("d-none");
   getMealsCategories();
+  $(this).scrollTop(0);
 });
 
 $("#area").click(() => {
   $(".search,.contact").addClass("d-none");
   getList("a");
+  $(this).scrollTop(0);
 });
 
 $("#ingredients").click(() => {
   $(".search,.contact").addClass("d-none");
   getList("i");
+  $(this).scrollTop(0);
 });
 
 $("#contact").click(() => {
