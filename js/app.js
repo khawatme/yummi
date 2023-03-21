@@ -3,21 +3,29 @@ strPreviewPage = "";
 
 async function getMeals() {
   $(".loader").removeClass("d-none");
-  let apiResponse = await fetch(`${strApiLink}search.php?s=`);
-  let jsonApiResponse = await apiResponse.json();
-  jsonApiResponse.meals !== null
-    ? displayMeals(jsonApiResponse.meals.slice(0, 20))
-    : "";
+  try {
+    let apiResponse = await fetch(`${strApiLink}search.php?s=`);
+    let jsonApiResponse = await apiResponse.json();
+    jsonApiResponse.meals !== null
+      ? displayMeals(jsonApiResponse.meals.slice(0, 20))
+      : "";
+  } catch (error) {
+    console.log("Error fetching meals:", error);
+  }
   $(".loader").addClass("d-none");
 }
 
 async function getMealsCategories() {
   $(".loader").removeClass("d-none");
-  let apiResponse = await fetch(`${strApiLink}categories.php`);
-  let jsonApiResponse = await apiResponse.json();
-  jsonApiResponse.meals !== null
-    ? displayMeals(jsonApiResponse.categories.slice(0, 20), "c")
-    : "";
+  try {
+    let apiResponse = await fetch(`${strApiLink}categories.php`);
+    let jsonApiResponse = await apiResponse.json();
+    jsonApiResponse.meals !== null
+      ? displayMeals(jsonApiResponse.categories.slice(0, 20), "c")
+      : "";
+  } catch (error) {
+    console.log("Error fetching meal categories:", error);
+  }
   $(".loader").addClass("d-none");
 }
 
@@ -125,59 +133,64 @@ function displayMeals(arr, type = "m") {
 
 async function getMeal(mealId) {
   $(".loader").removeClass("d-none");
-  let apiResponse = await fetch(`${strApiLink}lookup.php?i=${mealId}`);
-  let jsonApiResponse = await apiResponse.json();
-  jsonApiResponse = await jsonApiResponse.meals[0];
+  try {
+    let apiResponse = await fetch(`${strApiLink}lookup.php?i=${mealId}`);
+    let jsonApiResponse = await apiResponse.json();
+    jsonApiResponse = await jsonApiResponse.meals[0];
+  
 
-  let strRecipes = ``;
-  for (let i = 1; i <= 20; i++) {
-    let strMeasure = jsonApiResponse["strMeasure" + [i]];
-    let strIngredient = jsonApiResponse["strIngredient" + [i]];
-    let strRecipe = strMeasure + " " + strIngredient;
+    let strRecipes = ``;
+    for (let i = 1; i <= 20; i++) {
+      let strMeasure = jsonApiResponse["strMeasure" + [i]];
+      let strIngredient = jsonApiResponse["strIngredient" + [i]];
+      let strRecipe = strMeasure + " " + strIngredient;
 
-    strRecipe.length > 2
-      ? (strRecipes += `
-    <div class="alert alert-info d-inline-block py-1 px-2" role="alert">${
-      strMeasure + " " + strIngredient
-    }</div>`)
-      : "";
-  }
+      strRecipe.length > 2
+        ? (strRecipes += `
+      <div class="alert alert-info d-inline-block py-1 px-2" role="alert">${
+        strMeasure + " " + strIngredient
+      }</div>`)
+        : "";
+    }
 
-  let strTags = ``;
-  if (jsonApiResponse.strTags) {
-    strTags += `<h3>Tags :</h3>`;
-    let arrTags = jsonApiResponse.strTags.split(",");
-    arrTags.forEach((tagElement) => {
-      strTags += `
-      <div class="alert alert-danger d-inline-block py-1 px-2" role="alert">${tagElement}</div>`;
-    });
-  }
-
-  let strHTML = `
-  <div class="col-md-4 text-white">
-    <div class="meal-info-img">
-      <img src=${jsonApiResponse.strMealThumb} class="img-fluid rounded-3" alt="">
-      <h3 class="my-2 fw-bold">${jsonApiResponse.strMeal}</h4>
-    </div>
-  </div>
-  <div class="col-md-8 text-white">
-    <div class="meal-info">
-      <h3 class="fw-bold">Instructions</h3>
-      <p>${jsonApiResponse.strInstructions}</p>
-      <h3><span class="fw-bold">Area :</span> ${jsonApiResponse.strArea}</h3>
-      <h3><span class="fw-bold">Category :</span> ${jsonApiResponse.strCategory}</h3>
-      <h3>Recipes :</h3>
-        ${strRecipes}
-        ${strTags}
-      <div class="btns my-2">
-        <button type="button" class="btn btn-info"><a class="text-decoration-none text-white" href=${jsonApiResponse.strSource} target="_blank">Source</a></button>
-        <button type="button" class="btn btn-danger"><a class="text-decoration-none text-white" href=${jsonApiResponse.strYoutube} target="_blank">Youtube</a></button>
+    let strTags = ``;
+    if (jsonApiResponse.strTags) {
+      strTags += `<h3>Tags :</h3>`;
+      let arrTags = jsonApiResponse.strTags.split(",");
+      arrTags.forEach((tagElement) => {
+        strTags += `
+        <div class="alert alert-danger d-inline-block py-1 px-2" role="alert">${tagElement}</div>`;
+      });
+    }
+  
+    let strHTML = `
+    <div class="col-md-4 text-white">
+      <div class="meal-info-img">
+        <img src=${jsonApiResponse.strMealThumb} class="img-fluid rounded-3" alt="">
+        <h3 class="my-2 fw-bold">${jsonApiResponse.strMeal}</h4>
       </div>
     </div>
-  </div>
-  `;
+    <div class="col-md-8 text-white">
+      <div class="meal-info">
+        <h3 class="fw-bold">Instructions</h3>
+        <p>${jsonApiResponse.strInstructions}</p>
+        <h3><span class="fw-bold">Area :</span> ${jsonApiResponse.strArea}</h3>
+        <h3><span class="fw-bold">Category :</span> ${jsonApiResponse.strCategory}</h3>
+        <h3>Recipes :</h3>
+          ${strRecipes}
+          ${strTags}
+        <div class="btns my-2">
+          <button type="button" class="btn btn-info"><a class="text-decoration-none text-white" href=${jsonApiResponse.strSource} target="_blank">Source</a></button>
+          <button type="button" class="btn btn-danger"><a class="text-decoration-none text-white" href=${jsonApiResponse.strYoutube} target="_blank">Youtube</a></button>
+        </div>
+      </div>
+    </div>
+    `;
 
-  $(".meals").html(strHTML);
+    $(".meals").html(strHTML);
+  } catch(error) {
+    console.log("Error fetching meal:", error);
+  }
   // $('.btn-back').show();
   // $('.btn-back').click(()=> {
   //   $('body').html(strPreviewPage);
@@ -191,11 +204,15 @@ async function getMeal(mealId) {
  */
 async function getList(type) {
   $(".loader").removeClass("d-none");
-  let apiResponse = await fetch(`${strApiLink}list.php?${type}=list`);
-  let jsonApiResponse = await apiResponse.json();
-  jsonApiResponse.meals !== null
-    ? displayMeals(jsonApiResponse.meals.slice(0, 20), type)
-    : "";
+  try {
+    let apiResponse = await fetch(`${strApiLink}list.php?${type}=list`);
+    let jsonApiResponse = await apiResponse.json();
+    jsonApiResponse.meals !== null
+      ? displayMeals(jsonApiResponse.meals.slice(0, 20), type)
+      : "";
+  } catch (error) {
+    console.log("Error fetching meals list:", error);
+  }
   $(".loader").addClass("d-none");
 }
 
@@ -206,11 +223,15 @@ async function getList(type) {
  */
 async function getMealsByFilter(strSearch, type = "c") {
   $(".loader").removeClass("d-none");
-  let apiResponse = await fetch(`${strApiLink}filter.php?${type}=${strSearch}`);
-  let jsonApiResponse = await apiResponse.json();
-  jsonApiResponse.meals !== null
-    ? displayMeals(jsonApiResponse.meals.slice(0, 20))
-    : "";
+  try {
+    let apiResponse = await fetch(`${strApiLink}filter.php?${type}=${strSearch}`);
+    let jsonApiResponse = await apiResponse.json();
+    jsonApiResponse.meals !== null
+      ? displayMeals(jsonApiResponse.meals.slice(0, 20))
+      : "";
+  } catch (error) {
+    console.log("Error fetching meals:", error);
+  }
   $(".loader").addClass("d-none");
 }
 
@@ -221,14 +242,18 @@ async function getMealsByFilter(strSearch, type = "c") {
  */
 async function searchMeal(strSearch, strNameOrLetter = "s") {
   $(".loader").removeClass("d-none");
-  if (strSearch.length > 0) {
-    let apiResponse = await fetch(
-      `${strApiLink}search.php?${strNameOrLetter}=${strSearch}`
-    );
-    let jsonApiResponse = await apiResponse.json();
-    jsonApiResponse.meals !== null
-      ? displayMeals(jsonApiResponse.meals.slice(0, 20))
-      : "";
+  try {
+    if (strSearch.length > 0) {
+      let apiResponse = await fetch(
+        `${strApiLink}search.php?${strNameOrLetter}=${strSearch}`
+      );
+      let jsonApiResponse = await apiResponse.json();
+      jsonApiResponse.meals !== null
+        ? displayMeals(jsonApiResponse.meals.slice(0, 20))
+        : "";
+    }
+  } catch(error) {
+    console.log("Error fetching meals:", error);
   }
   $(".loader").addClass("d-none");
 }
